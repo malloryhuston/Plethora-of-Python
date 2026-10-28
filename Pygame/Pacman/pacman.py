@@ -892,6 +892,67 @@ def get_targets(blink_x, blink_y, ink_x, ink_y, pink_x, pink_y, clyd_x, clyd_y):
             clyd_target = return_target
     return [blink_target, ink_target, pink_target, clyd_target]
 
+def lose_life():
+    global lives, game_over, moving, startup_counter
+    global player_x, player_y, direction, direction_command
+    global blinky_x, blinky_y, blinky_direction
+    global inky_x, inky_y, inky_direction
+    global pinky_x, pinky_y, pinky_direction
+    global clyde_x, clyde_y, clyde_direction
+    global blinky_dead, inky_dead, pinky_dead, clyde_dead
+    global powerup, power_counter, eaten_ghost
+
+    # Subtract one life
+    lives -= 1
+
+    # End the game when no lives remain
+    if lives <= 0:
+        lives = 0
+        game_over = True
+        moving = False
+        startup_counter = 0
+        return
+
+    # Reset the startup timer
+    startup_counter = 0
+    moving = False
+
+    # Reset power-up state
+    powerup = False
+    power_counter = 0
+    eaten_ghost = [False, False, False, False]
+
+    # Reset Pac-Man
+    player_x = 450
+    player_y = 663
+    direction = 0
+    direction_command = 0
+
+    # Reset Blinky
+    blinky_x = 56
+    blinky_y = 58
+    blinky_direction = 0
+
+    # Reset Inky
+    inky_x = 440
+    inky_y = 388
+    inky_direction = 2
+
+    # Reset Pinky
+    pinky_x = 440
+    pinky_y = 438
+    pinky_direction = 2
+
+    # Reset Clyde
+    clyde_x = 440
+    clyde_y = 438
+    clyde_direction = 2
+
+    # Reset ghost death states
+    blinky_dead = False
+    inky_dead = False
+    pinky_dead = False
+    clyde_dead = False
 
 run = True
 while run:
@@ -989,166 +1050,18 @@ while run:
             score, powerup, power_counter, eaten_ghost
         )
 
-    # Only process normal ghost collisions during gameplay
-    if moving and not powerup:  # noqa: SIM102
-        if (player_circle.colliderect(blinky.rect) and not blinky.dead) or \
-                (player_circle.colliderect(inky.rect) and not inky.dead) or \
-                (player_circle.colliderect(pinky.rect) and not pinky.dead) or \
-                (player_circle.colliderect(clyde.rect) and not clyde.dead):
-            if lives > 0:
-                lives -= 1
-                startup_counter = 0
-                powerup = False
-                power_counter = 0
-                player_x = 450
-                player_y = 663
-                direction = 0
-                direction_command = 0
-                blinky_x = 56
-                blinky_y = 58
-                blinky_direction = 0
-                inky_x = 440
-                inky_y = 388
-                inky_direction = 2
-                pinky_x = 440
-                pinky_y = 438
-                pinky_direction = 2
-                clyde_x = 440
-                clyde_y = 438
-                clyde_direction = 2
-                eaten_ghost = [False, False, False, False]
-                blinky_dead = False
-                inky_dead = False
-                clyde_dead = False
-                pinky_dead = False
-            else:
-                game_over = True
-                moving = False
-                startup_counter = 0
-    if moving and powerup and player_circle.colliderect(blinky.rect) and eaten_ghost[0] and not blinky.dead:
-        if lives > 0:
-            powerup = False
-            power_counter = 0
-            lives -= 1
-            startup_counter = 0
-            player_x = 450
-            player_y = 663
-            direction = 0
-            direction_command = 0
-            blinky_x = 56
-            blinky_y = 58
-            blinky_direction = 0
-            inky_x = 440
-            inky_y = 388
-            inky_direction = 2
-            pinky_x = 440
-            pinky_y = 438
-            pinky_direction = 2
-            clyde_x = 440
-            clyde_y = 438
-            clyde_direction = 2
-            eaten_ghost = [False, False, False, False]
-            blinky_dead = False
-            inky_dead = False
-            clyde_dead = False
-            pinky_dead = False
-        else:
-            game_over = True
-            moving = False
-            startup_counter = 0
-    if moving and powerup and player_circle.colliderect(inky.rect) and eaten_ghost[1] and not inky.dead:
-        if lives > 0:
-            powerup = False
-            power_counter = 0
-            lives -= 1
-            startup_counter = 0
-            player_x = 450
-            player_y = 663
-            direction = 0
-            direction_command = 0
-            blinky_x = 56
-            blinky_y = 58
-            blinky_direction = 0
-            inky_x = 440
-            inky_y = 388
-            inky_direction = 2
-            pinky_x = 440
-            pinky_y = 438
-            pinky_direction = 2
-            clyde_x = 440
-            clyde_y = 438
-            clyde_direction = 2
-            eaten_ghost = [False, False, False, False]
-            blinky_dead = False
-            inky_dead = False
-            clyde_dead = False
-            pinky_dead = False
-        else:
-            game_over = True
-            moving = False
-            startup_counter = 0
-    if moving and powerup and player_circle.colliderect(pinky.rect) and eaten_ghost[2] and not pinky.dead:
-        if lives > 0:
-            powerup = False
-            power_counter = 0
-            lives -= 1
-            startup_counter = 0
-            player_x = 450
-            player_y = 663
-            direction = 0
-            direction_command = 0
-            blinky_x = 56
-            blinky_y = 58
-            blinky_direction = 0
-            inky_x = 440
-            inky_y = 388
-            inky_direction = 2
-            pinky_x = 440
-            pinky_y = 438
-            pinky_direction = 2
-            clyde_x = 440
-            clyde_y = 438
-            clyde_direction = 2
-            eaten_ghost = [False, False, False, False]
-            blinky_dead = False
-            inky_dead = False
-            clyde_dead = False
-            pinky_dead = False
-        else:
-            game_over = True
-            moving = False
-            startup_counter = 0
-    if moving and powerup and player_circle.colliderect(clyde.rect) and eaten_ghost[3] and not clyde.dead:
-        if lives > 0:
-            powerup = False
-            power_counter = 0
-            lives -= 1
-            startup_counter = 0
-            player_x = 450
-            player_y = 663
-            direction = 0
-            direction_command = 0
-            blinky_x = 56
-            blinky_y = 58
-            blinky_direction = 0
-            inky_x = 440
-            inky_y = 388
-            inky_direction = 2
-            pinky_x = 440
-            pinky_y = 438
-            pinky_direction = 2
-            clyde_x = 440
-            clyde_y = 438
-            clyde_direction = 2
-            eaten_ghost = [False, False, False, False]
-            blinky_dead = False
-            inky_dead = False
-            clyde_dead = False
-            pinky_dead = False
-        else:
-            game_over = True
-            moving = False
-            startup_counter = 0
+    # Check for dangerous ghot collisions during gameplay
+    if moving:
+        ghosts = [blinky, inky, pinky, clyde]
+
+        for ghost in ghosts:
+            if player_circle.colliderect(ghost.rect) and not ghost.dead:  # noqa: SIM102
+
+                # Ghost is dangerous without power-up or if previously eaten
+                if not powerup or eaten_ghost[ghost.id]:
+                    lose_life()
+                    break
+
     if moving and powerup and player_circle.colliderect(blinky.rect) and not blinky.dead and not eaten_ghost[0]:
         blinky_dead = True
         eaten_ghost[0] = True
@@ -1181,7 +1094,6 @@ while run:
             if event.key == pygame.K_SPACE and (game_over or game_won):
                 powerup = False
                 power_counter = 0
-                lives -= 1
                 startup_counter = 0
                 player_x = 450
                 player_y = 663
