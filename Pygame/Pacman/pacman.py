@@ -1125,6 +1125,9 @@ while run:
         if event.type == pygame.QUIT:
             run = False
         if event.type == pygame.KEYDOWN:
+            # Press Escape to quit the game
+            if event.key == pygame.K_ESCAPE:
+                run = False
             if event.key == pygame.K_RIGHT:
                 direction_command = 0
             if event.key == pygame.K_LEFT:
