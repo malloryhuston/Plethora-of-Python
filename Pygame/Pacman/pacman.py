@@ -3,8 +3,13 @@ import copy
 from board import boards
 import pygame
 import math
+from pathlib import Path
 
 pygame.init()
+
+# Locate assets relative to pacman.py
+BASE_DIR = Path(__file__).resolve().parent
+ASSETS_DIR = BASE_DIR / "assets"
 
 WIDTH = 900
 HEIGHT = 950
@@ -30,22 +35,59 @@ level = copy.deepcopy(boards)
 color = 'blue'
 PI = math.pi
 
-# Player Images
 player_images = []
 
 for i in range(1, 5):
-    image = pygame.image.load(f'assets/player_images/{i}.png').convert_alpha()
+    image = pygame.image.load(
+        ASSETS_DIR / "player_images" / f"{i}.png"
+    ).convert_alpha()
 
-    image = pygame.transform.scale(image, (45, 45))
+    player_images.append(
+        pygame.transform.scale(image, (45, 45))
+    )
 
-    player_images.append(image)
+blinky_img = pygame.transform.scale(
+    pygame.image.load(
+        ASSETS_DIR / "ghost_images" / "red.png"
+    ).convert_alpha(),
+    (45, 45)
+)
 
-blinky_img = pygame.transform.scale(pygame.image.load('assets/ghost_images/red.png'), (45, 45))
-pinky_img = pygame.transform.scale(pygame.image.load('assets/ghost_images/pink.png'), (45, 45))
-inky_img = pygame.transform.scale(pygame.image.load('assets/ghost_images/blue.png'), (45, 45))
-clyde_img = pygame.transform.scale(pygame.image.load('assets/ghost_images/orange.png'), (45, 45))
-spooked_img = pygame.transform.scale(pygame.image.load('assets/ghost_images/powerup.png'), (45, 45))
-dead_img = pygame.transform.scale(pygame.image.load('assets/ghost_images/dead.png'), (45, 45))
+pinky_img = pygame.transform.scale(
+    pygame.image.load(
+        ASSETS_DIR / "ghost_images" / "pink.png"
+        ).convert_alpha(),
+    (45, 45)
+)
+
+inky_img = pygame.transform.scale(
+    pygame.image.load(
+        ASSETS_DIR / "ghost_images" / "blue.png"
+        ).convert_alpha(),
+    (45, 45)
+)
+
+clyde_img = pygame.transform.scale(
+    pygame.image.load(
+        ASSETS_DIR / "ghost_images" / "orange.png"
+        ).convert_alpha(),
+    (45, 45)
+)
+
+spooked_img = pygame.transform.scale(
+    pygame.image.load(
+        ASSETS_DIR / "ghost_images" / "powerup.png"
+        ).convert_alpha(),
+    (45, 45)
+)
+
+dead_img = pygame.transform.scale(
+    pygame.image.load(
+        ASSETS_DIR / "ghost_images" / "dead.png"
+        ).convert_alpha(),
+    (45, 45)
+)
+
 player_x = 450
 player_y = 663
 direction = 0
