@@ -838,15 +838,20 @@ def get_targets(blink_x, blink_y, ink_x, ink_y, pink_x, pink_y, clyd_x, clyd_y):
                 ink_target = (player_x, player_y)
         else:
             ink_target = return_target
-        if not pinky.dead:
+
+        # Pinky's targeting behavior during a power-up
+        if not pinky.dead and not eaten_ghost[2]:
             pink_target = (player_x, runaway_y)
+
         elif not pinky.dead and eaten_ghost[2]:
             if 340 < pink_x < 560 and 340 < pink_y < 500:
                 pink_target = (400, 100)
             else:
                 pink_target = (player_x, player_y)
+
         else:
             pink_target = return_target
+
         if not clyde.dead and not eaten_ghost[3]:
             clyd_target = (450, 450)
         elif not clyde.dead and eaten_ghost[3]:
