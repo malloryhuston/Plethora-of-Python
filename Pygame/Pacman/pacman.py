@@ -904,9 +904,17 @@ while run:
         power_counter = 0
         powerup = False
         eaten_ghost = [False, False, False, False]
-    if startup_counter < 180 and not game_over and not game_won:
+
+    # Stop movement when the game is over or won
+    if game_over or game_won:
+        moving = False
+
+    # Pause for 3 seconds before gameplay starts
+    elif startup_counter < 180:
         moving = False
         startup_counter += 1
+
+    # Allow normal gameplay
     else:
         moving = True
 
@@ -969,9 +977,15 @@ while run:
         else:
             inky_x, inky_y, inky_direction = inky.move_clyde()
         clyde_x, clyde_y, clyde_direction = clyde.move_clyde()
-    score, powerup, power_counter, eaten_ghost = check_collisions(score, powerup, power_counter, eaten_ghost)
-    # add to if not powerup to check if eaten ghosts
-    if not powerup:  # noqa: SIM102
+
+    # Only collect pellets while actively playing
+    if moving:
+        score, powerup, power_counter, eaten_ghost = check_collisions(
+            score, powerup, power_counter, eaten_ghost
+        )
+
+    # Only process normal ghost collisions during gameplay
+    if moving and not powerup:  # noqa: SIM102
         if (player_circle.colliderect(blinky.rect) and not blinky.dead) or \
                 (player_circle.colliderect(inky.rect) and not inky.dead) or \
                 (player_circle.colliderect(pinky.rect) and not pinky.dead) or \
@@ -1006,7 +1020,7 @@ while run:
                 game_over = True
                 moving = False
                 startup_counter = 0
-    if powerup and player_circle.colliderect(blinky.rect) and eaten_ghost[0] and not blinky.dead:
+    if moving and powerup and player_circle.colliderect(blinky.rect) and eaten_ghost[0] and not blinky.dead:
         if lives > 0:
             powerup = False
             power_counter = 0
@@ -1037,7 +1051,7 @@ while run:
             game_over = True
             moving = False
             startup_counter = 0
-    if powerup and player_circle.colliderect(inky.rect) and eaten_ghost[1] and not inky.dead:
+    if moving and powerup and player_circle.colliderect(inky.rect) and eaten_ghost[1] and not inky.dead:
         if lives > 0:
             powerup = False
             power_counter = 0
@@ -1068,7 +1082,7 @@ while run:
             game_over = True
             moving = False
             startup_counter = 0
-    if powerup and player_circle.colliderect(pinky.rect) and eaten_ghost[2] and not pinky.dead:
+    if moving and powerup and player_circle.colliderect(pinky.rect) and eaten_ghost[2] and not pinky.dead:
         if lives > 0:
             powerup = False
             power_counter = 0
@@ -1099,7 +1113,7 @@ while run:
             game_over = True
             moving = False
             startup_counter = 0
-    if powerup and player_circle.colliderect(clyde.rect) and eaten_ghost[3] and not clyde.dead:
+    if moving and powerup and player_circle.colliderect(clyde.rect) and eaten_ghost[3] and not clyde.dead:
         if lives > 0:
             powerup = False
             power_counter = 0
@@ -1130,19 +1144,19 @@ while run:
             game_over = True
             moving = False
             startup_counter = 0
-    if powerup and player_circle.colliderect(blinky.rect) and not blinky.dead and not eaten_ghost[0]:
+    if moving and powerup and player_circle.colliderect(blinky.rect) and not blinky.dead and not eaten_ghost[0]:
         blinky_dead = True
         eaten_ghost[0] = True
         score += (2 ** eaten_ghost.count(True)) * 100
-    if powerup and player_circle.colliderect(inky.rect) and not inky.dead and not eaten_ghost[1]:
+    if moving and powerup and player_circle.colliderect(inky.rect) and not inky.dead and not eaten_ghost[1]:
         inky_dead = True
         eaten_ghost[1] = True
         score += (2 ** eaten_ghost.count(True)) * 100
-    if powerup and player_circle.colliderect(pinky.rect) and not pinky.dead and not eaten_ghost[2]:
+    if moving and powerup and player_circle.colliderect(pinky.rect) and not pinky.dead and not eaten_ghost[2]:
         pinky_dead = True
         eaten_ghost[2] = True
         score += (2 ** eaten_ghost.count(True)) * 100
-    if powerup and player_circle.colliderect(clyde.rect) and not clyde.dead and not eaten_ghost[3]:
+    if moving and powerup and player_circle.colliderect(clyde.rect) and not clyde.dead and not eaten_ghost[3]:
         clyde_dead = True
         eaten_ghost[3] = True
         score += (2 ** eaten_ghost.count(True)) * 100
