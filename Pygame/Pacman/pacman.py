@@ -8,7 +8,21 @@ pygame.init()
 
 WIDTH = 900
 HEIGHT = 950
-screen = pygame.display.set_mode([WIDTH, HEIGHT])
+
+# Internal game canvas
+screen = pygame.Surface((WIDTH, HEIGHT))
+
+# Physical window that fits the MacBook Air
+WINDOW_HEIGHT = 800
+SCALE = WINDOW_HEIGHT / HEIGHT
+WINDOW_WIDTH = round(WIDTH * SCALE)
+
+window = pygame.display.set_mode(
+    (WINDOW_WIDTH, WINDOW_HEIGHT)
+)
+
+pygame.display.set_caption("Pac-Man")
+
 timer = pygame.time.Clock()
 fps = 60
 font = pygame.font.Font('freesansbold.ttf', 20)
@@ -1202,8 +1216,18 @@ while run:
     if clyde.in_box and clyde_dead:
         clyde_dead = False
 
+    # Scale the original game to fix the MacBook Air screen
+    scaled_screen = pygame.transform.smoothscale(
+        screen, (WINDOW_WIDTH, WINDOW_HEIGHT)
+    )
+
+    # Draw the scaled game onto the actual window
+    window.blit(scaled_screen, (0, 0))
+
+    # Update the display
     pygame.display.flip()
+
 pygame.quit()
 
 
-# sound effects, restart and winning messages
+# Sound effects, restart and winning messages
