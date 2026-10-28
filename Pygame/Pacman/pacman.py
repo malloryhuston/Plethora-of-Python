@@ -29,9 +29,17 @@ font = pygame.font.Font('freesansbold.ttf', 20)
 level = copy.deepcopy(boards)
 color = 'blue'
 PI = math.pi
+
+# Player Images
 player_images = []
+
 for i in range(1, 5):
-    player_images.append(pygame.transform.scale(pygame.image.load('assets/player_images/1.png'), (45, 45)))
+    image = pygame.image.load(f'assets/player_images/{i}.png').convert_alpha()
+
+    image = pygame.transform.scale(image, (45, 45))
+
+    player_images.append(image)
+
 blinky_img = pygame.transform.scale(pygame.image.load('assets/ghost_images/red.png'), (45, 45))
 pinky_img = pygame.transform.scale(pygame.image.load('assets/ghost_images/pink.png'), (45, 45))
 inky_img = pygame.transform.scale(pygame.image.load('assets/ghost_images/blue.png'), (45, 45))
